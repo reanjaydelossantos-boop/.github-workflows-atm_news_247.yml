@@ -30,10 +30,17 @@ jobs:
           PAGE_ID: ${{ secrets.PAGE_ID }}
           PAGE_ACCESS_TOKEN: ${{ secrets.PAGE_ACCESS_TOKEN }}
         run: |
+          # Automatically detects if files are in root or inside atm_news_ph_bot/
+          if [ -d "atm_news_ph_bot" ]; then
+            cd atm_news_ph_bot
+          fi
           python runner.py --post-now
 
       - name: Commit and Push Updated History
         run: |
+          if [ -d "atm_news_ph_bot" ]; then
+            cd atm_news_ph_bot
+          fi
           git config --global user.name "ATM News PH Bot"
           git config --global user.email "bot@atmnewsph.internal"
           git add posted_history.json
